@@ -1,0 +1,6 @@
+.DS_Store
+.idea/
+log/
+tmp/
+.air.toml
+*_test.go

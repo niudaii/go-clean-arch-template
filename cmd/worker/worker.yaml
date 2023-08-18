@@ -1,0 +1,22 @@
+root:
+
+logger:
+  level: debug
+  prefix:
+  format: console
+  director: log
+  encode-level: LowercaseLevelEncoder
+  stacktrace-key: stacktrace
+  max-age: 30
+  show-line: true
+  log-in-console: true
+
+amqp:
+  host: 127.0.0.1
+  port: 5672
+  username: admin
+  password: zp857857857
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: zp857857857

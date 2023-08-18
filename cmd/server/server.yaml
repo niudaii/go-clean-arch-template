@@ -1,0 +1,46 @@
+root:
+
+http-server:
+  mode: release
+  host: 127.0.0.1
+  port: 8090
+
+jwt:
+  header-name: Authorization
+  signing-key: 670883b0-13c3-4f03-8d91-238d5325be88
+  expires-time: 604800
+  issuer: niudaii
+
+logger:
+  level: debug
+  prefix:
+  format: console
+  director: log
+  encode-level: LowercaseLevelEncoder
+  stacktrace-key: stacktrace
+  max-age: 30
+  show-line: true
+  log-in-console: true
+
+db:
+  db-type: pgsql
+  path: 127.0.0.1
+  port: 5432
+  config:
+  db-name: demo
+  username: root
+  password: zp857857857
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: error
+  log-zap: true
+
+amqp:
+  host: 127.0.0.1
+  port: 5672
+  username: admin
+  password: zp857857857
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: zp857857857
