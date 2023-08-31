@@ -44,7 +44,7 @@ func Operation() gin.HandlerFunc {
 		operation.Status = c.Writer.Status()
 		operation.Resp = writer.body.String()
 		operation.Resp = operation.Resp[:util.Min(1024, len(operation.Resp))]
-		// TODO logger or db
+		// logger or db
 		zap.L().Sugar().Named("request").Infof("%v %v %v\n%v", operation.Method, operation.Path, operation.Query, operation.Body)
 		zap.L().Sugar().Named("response").Infof("%v\n%v", operation.Status, operation.Resp)
 	}

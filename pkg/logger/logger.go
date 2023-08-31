@@ -20,6 +20,7 @@ func Init(z Zap) {
 	if z.ShowLine {
 		logger = logger.WithOptions(zap.AddCaller())
 	}
+	zap.ReplaceGlobals(logger)
 }
 
 func GetLogger() *zap.Logger {

@@ -7,14 +7,11 @@ import (
 	"go-clean-template/pkg/jwt"
 	"go-clean-template/pkg/logger"
 	"log"
-
-	"go.uber.org/zap"
 )
 
 func Run(conf *serverConfig.Server) {
 	// Logger
 	logger.Init(conf.Logger)
-	zap.ReplaceGlobals(logger.GetLogger())
 	// Jwt
 	jwt.Init(conf.Jwt)
 	// Asynq

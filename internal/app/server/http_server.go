@@ -18,10 +18,9 @@ import (
 
 func RunHTTPServer(mode, port string, db *gorm.DB, redisClientOpt asynq.RedisClientOpt) {
 	gin.SetMode(mode)
-	address := fmt.Sprintf(":%v", port)
 	handler := httpHandler(db, redisClientOpt)
 	s := &http.Server{
-		Addr:           address,
+		Addr:           fmt.Sprintf(":%v", port),
 		Handler:        handler,
 		ReadTimeout:    20 * time.Second,
 		WriteTimeout:   20 * time.Second,
