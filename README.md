@@ -13,11 +13,12 @@ golang 简洁架构模版，对应的前端项目为 [vue-web-template](https://
 
 ### 代码架构
 
-- ![Clean Coder Blog](https://nnotes.oss-cn-hangzhou.aliyuncs.com/notes/CleanArchitecture.jpg)
-- 依赖注入
+- 简洁架构![Clean Coder Blog](https://nnotes.oss-cn-hangzhou.aliyuncs.com/notes/CleanArchitecture.jpg)
+- 面向包的设计
 - 面向接口编程
-
+- 依赖注入
 - repo 层 Filter 思想 BuildWhere()
+- 童子军军规
 
 ### API 文档
 
