@@ -5,14 +5,11 @@ import (
 	"go-clean-template/pkg/logger"
 	"go-clean-template/pkg/worker"
 	"log"
-
-	"go.uber.org/zap"
 )
 
 func Run(conf *workerConfig.Worker) {
 	// Logger
 	logger.Init(conf.Logger)
-	zap.ReplaceGlobals(logger.GetLogger())
 	// Init Worker
 	err := worker.Init()
 	if err != nil {
