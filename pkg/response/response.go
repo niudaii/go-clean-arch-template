@@ -1,6 +1,7 @@
 package response
 
 import (
+	"go-clean-template/pkg/stack"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -31,9 +32,11 @@ func OkWithMessage(msg string, c *gin.Context) {
 
 func ErrorWithMessage(msg string, err error, c *gin.Context) {
 	if err != nil {
+		stackBytes := stack.GetStack(2)
 		zap.L().Named("[gin]").Error(
 			msg,
 			zap.Error(err),
+			zap.Any("stack", string(stackBytes)),
 		)
 	}
 	Result(http.StatusInternalServerError, struct{}{}, msg, c)
