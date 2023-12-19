@@ -32,7 +32,7 @@ func RunRPCClient(url string) {
 			body := string(resp.Body)
 			logger.Debug("heartbeat success", zap.String("resp", body))
 			if body == "exit" {
-				logger.Info("收到 exit 信号, 程序退出")
+				logger.Info("收到 exit 信号，程序退出")
 				os.Exit(0)
 			}
 		}

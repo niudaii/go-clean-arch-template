@@ -12,11 +12,15 @@ type UserApi struct {
 	UserUsecase entity.UserUsecase
 }
 
+const (
+	LogoutSuccess = "注销成功"
+)
+
 func (a UserApi) GetInfo(c *gin.Context) {
 	userID := jwt.GetUserID(c)
 	user, err := a.UserUsecase.FindByID(userID)
 	if err != nil {
-		response.ErrorWithMessage("查询失败", err, c)
+		response.ErrorWithMessage(FindFail, err, c)
 	} else {
 		role := entity.Role{
 			RoleName: user.Authority.AuthorityName,
@@ -31,10 +35,10 @@ func (a UserApi) GetInfo(c *gin.Context) {
 				role,
 			},
 		}
-		response.Ok(data, "查询成功", c)
+		response.Ok(data, FindSuccess, c)
 	}
 }
 
 func (a UserApi) Logout(c *gin.Context) {
-	response.OkWithMessage("注销成功", c)
+	response.OkWithMessage(LogoutSuccess, c)
 }

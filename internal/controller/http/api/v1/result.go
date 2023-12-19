@@ -7,6 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	FindSuccess = "查询成功"
+	FindFail    = "查询失败"
+)
+
 type ResultApi struct {
 	ResultUsecase entity.ResultUsecase
 }
@@ -20,11 +25,11 @@ func (a ResultApi) FindList(c *gin.Context) {
 	}
 	list, total, err := a.ResultUsecase.FindList(&req)
 	if err != nil {
-		response.ErrorWithMessage("查询失败", err, c)
+		response.ErrorWithMessage(FindFail, err, c)
 	} else {
 		response.Ok(entity.PageResult{
 			List:  list,
 			Total: total,
-		}, "查询成功", c)
+		}, FindSuccess, c)
 	}
 }

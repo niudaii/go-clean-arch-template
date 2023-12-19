@@ -1,13 +1,11 @@
 package v1
 
 import (
+	"github.com/gin-gonic/gin"
+	"github.com/gofrs/uuid"
 	"go-clean-template/internal/entity"
 	"go-clean-template/pkg/jwt"
 	"go-clean-template/pkg/response"
-
-	uuid "github.com/satori/go.uuid"
-
-	"github.com/gin-gonic/gin"
 )
 
 type TaskApi struct {
@@ -25,7 +23,7 @@ func (a TaskApi) Create(c *gin.Context) {
 	userID := jwt.GetUserID(c)
 	newTask := entity.Task{
 		BasicAccessModel: entity.BasicAccessModel{
-			UUID:   uuid.NewV4().String(),
+			UUID:   uuid.Must(uuid.NewV4()).String(),
 			UserID: userID,
 		},
 		TaskName: req.TaskName,
@@ -35,14 +33,14 @@ func (a TaskApi) Create(c *gin.Context) {
 	}
 	err = a.TaskUsecase.Create(newTask)
 	if err != nil {
-		response.ErrorWithMessage("创建失败", err, c)
+		response.ErrorWithMessage(CreateFail, err, c)
 		return
 	}
 	err = a.AsynqUsecase.EnqueueTask(newTask)
 	if err != nil {
-		response.ErrorWithMessage("创建失败", err, c)
+		response.ErrorWithMessage(CreateFail, err, c)
 	} else {
-		response.OkWithMessage("创建成功", c)
+		response.OkWithMessage(CreateSuccess, c)
 	}
 }
 
@@ -55,14 +53,14 @@ func (a TaskApi) Delete(c *gin.Context) {
 	}
 	err = a.TaskUsecase.Delete(req.UUIDs)
 	if err != nil {
-		response.ErrorWithMessage("删除失败", err, c)
+		response.ErrorWithMessage(DeleteFail, err, c)
 		return
 	}
 	err = a.AsynqUsecase.DeleteTask(req.UUIDs)
 	if err != nil {
-		response.ErrorWithMessage("删除失败", err, c)
+		response.ErrorWithMessage(DeleteFail, err, c)
 	} else {
-		response.OkWithMessage("删除成功", c)
+		response.OkWithMessage(DeleteSuccess, c)
 	}
 }
 
@@ -75,11 +73,11 @@ func (a TaskApi) FindList(c *gin.Context) {
 	}
 	list, total, err := a.TaskUsecase.FindList(&req)
 	if err != nil {
-		response.ErrorWithMessage("查询失败", err, c)
+		response.ErrorWithMessage(FindFail, err, c)
 	} else {
 		response.Ok(entity.PageResult{
 			List:  list,
 			Total: total,
-		}, "查询成功", c)
+		}, FindSuccess, c)
 	}
 }

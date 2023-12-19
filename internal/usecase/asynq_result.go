@@ -6,11 +6,9 @@ import (
 	"go-clean-template/pkg/task"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
-
-	"go.uber.org/zap"
-
+	"github.com/gofrs/uuid"
 	"github.com/hibiken/asynq"
+	"go.uber.org/zap"
 )
 
 type asynqResultUsecase struct {
@@ -51,7 +49,7 @@ func (a asynqResultUsecase) WaitForResult(redisClientOpt asynq.RedisClientOpt) {
 				}
 			}
 		}
-		// 等待10秒
+		// 等待 10 秒
 		time.Sleep(10 * time.Second)
 	}
 }
@@ -95,7 +93,7 @@ func (a asynqResultUsecase) handleAddition(taskID string, resultBytes []byte) (e
 	}
 	zap.L().Info("[addition]", zap.Any("result", result.Result))
 
-	result.UUID = uuid.NewV4().String()
+	result.UUID = uuid.Must(uuid.NewV4()).String()
 	result.TaskUUID = taskID
 	err = a.resultRepository.Create(result)
 
@@ -110,7 +108,7 @@ func (a asynqResultUsecase) handleMultiplication(taskID string, resultBytes []by
 	}
 	zap.L().Info("[multiplication]", zap.Any("result", result.Result))
 
-	result.UUID = uuid.NewV4().String()
+	result.UUID = uuid.Must(uuid.NewV4()).String()
 	result.TaskUUID = taskID
 	err = a.resultRepository.Create(result)
 
