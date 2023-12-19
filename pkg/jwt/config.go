@@ -1,9 +1,9 @@
 package jwt
 
-import uuid "github.com/satori/go.uuid"
+import "github.com/gofrs/uuid"
 
 var config = &Config{
-	SigningKey:  uuid.NewV4().String(),
+	SigningKey:  uuid.Must(uuid.NewV4()).String(),
 	ExpiresTime: 604800,
 	Issuer:      "niudaii",
 	HeaderName:  "Authorization",

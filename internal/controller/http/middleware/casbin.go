@@ -15,7 +15,7 @@ func Casbin(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 获取用户的角色
 		sub := fmt.Sprintf("%v", jwt.GetAuthorityID(c)) // 需要转为字符串
-		// 获取请求的PATH
+		// 获取请求的 PATH
 		obj := c.Request.URL.Path
 		// 获取请求方法
 		act := c.Request.Method

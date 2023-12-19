@@ -5,6 +5,7 @@ import (
 	"go-clean-template/internal/controller/http/middleware"
 	"go-clean-template/internal/controller/http/router"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/hibiken/asynq"
@@ -16,9 +17,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	ginName = "[gin]"
+)
+
 func RunHTTPServer(mode, port string, db *gorm.DB, redisClientOpt asynq.RedisClientOpt) {
+	gin.DisableConsoleColor()
 	gin.SetMode(mode)
+
 	handler := httpHandler(db, redisClientOpt)
+	logger := zap.L().Named(ginName).Sugar()
+	for _, route := range handler.Routes() {
+		logger.Infof("%v %v --> %v", route.Method, route.Path, route.Handler)
+	}
+
 	s := &http.Server{
 		Addr:           fmt.Sprintf(":%v", port),
 		Handler:        handler,
@@ -26,8 +38,12 @@ func RunHTTPServer(mode, port string, db *gorm.DB, redisClientOpt asynq.RedisCli
 		WriteTimeout:   20 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
+	logger.Infof("HTTP Server Will Listening at %v", s.Addr)
 	err := s.ListenAndServe()
-	zap.L().Named("[gin]").Error("程序退出", zap.Error(err))
+	if err != nil {
+		logger.Errorf("HTTP Server ListenAndServe err: %v", err)
+		os.Exit(0)
+	}
 }
 
 func httpHandler(db *gorm.DB, opt asynq.RedisClientOpt) *gin.Engine {

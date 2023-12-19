@@ -5,8 +5,7 @@ import (
 	"sync"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
-
+	"github.com/gofrs/uuid"
 	"github.com/niudaii/util"
 )
 
@@ -40,7 +39,7 @@ func Init() (err error) {
 	}
 	status = &Status{
 		mu:        sync.Mutex{},
-		UUID:      uuid.NewV4().String(),
+		UUID:      uuid.Must(uuid.NewV4()).String(),
 		IP:        ip,
 		Hostname:  hostname,
 		CreatedAt: time.Now(),

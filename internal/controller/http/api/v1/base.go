@@ -29,7 +29,7 @@ func (a BaseApi) Login(c *gin.Context) {
 		response.ErrorWithMessage("用户名或密码错误", nil, c)
 		return
 	}
-	// 登录成功,返回 token
+	// 登录成功，返回 token
 	token, err := a.LoginUsecase.CreateAccessToken(&user)
 	if err != nil {
 		response.ErrorWithMessage("生成 token 失败", err, c)

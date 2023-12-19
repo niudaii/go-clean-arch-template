@@ -1,13 +1,11 @@
 package v1
 
 import (
+	"github.com/gin-gonic/gin"
+	"github.com/gofrs/uuid"
 	"go-clean-template/internal/entity"
 	"go-clean-template/pkg/jwt"
 	"go-clean-template/pkg/response"
-
-	uuid "github.com/satori/go.uuid"
-
-	"github.com/gin-gonic/gin"
 )
 
 type TaskApi struct {
@@ -25,7 +23,7 @@ func (a TaskApi) Create(c *gin.Context) {
 	userID := jwt.GetUserID(c)
 	newTask := entity.Task{
 		BasicAccessModel: entity.BasicAccessModel{
-			UUID:   uuid.NewV4().String(),
+			UUID:   uuid.Must(uuid.NewV4()).String(),
 			UserID: userID,
 		},
 		TaskName: req.TaskName,

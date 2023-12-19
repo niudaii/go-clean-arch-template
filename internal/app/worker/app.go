@@ -4,20 +4,27 @@ import (
 	workerConfig "go-clean-template/config/worker"
 	"go-clean-template/pkg/logger"
 	"go-clean-template/pkg/worker"
-	"log"
+	"go.uber.org/zap"
+)
+
+const (
+	InitConfigSuccess = "初始化配置成功:\n%v"
+	InitWorkerFail    = "初始化 worker 失败: %v"
 )
 
 func Run(conf *workerConfig.Worker) {
-	// Logger
+	// Init Logger
 	logger.Init(conf.Logger)
+	zap.L().Sugar().Infof(InitConfigSuccess, conf.String())
 	// Init Worker
 	err := worker.Init()
 	if err != nil {
-		log.Printf("error 初始化 worker 失败: %v\n", err)
+		zap.L().Sugar().Errorf(InitWorkerFail, err)
 		return
 	}
-	// RPC Client
+
+	// Run RPC Client
 	go RunRPCClient(conf.AMQP.URL())
-	// Asynq Server
+	// Run Asynq Server
 	RunAsynqServer(conf.Redis.Addr(), conf.Redis.Password)
 }
